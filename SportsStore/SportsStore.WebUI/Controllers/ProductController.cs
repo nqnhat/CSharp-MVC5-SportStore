@@ -6,12 +6,14 @@ using System.Web.Mvc;
 
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Entities;
+using SportsStore.WebUI.Models;
 
 namespace SportsStore.WebUI.Controllers
 {
     public class ProductController : Controller
     {
         private IProductRepository repository;
+        public int PageSize = 4;
 
         public ProductController(IProductRepository _productInjection)
         {
@@ -19,9 +21,23 @@ namespace SportsStore.WebUI.Controllers
         }
 
         // GET: Product
-        public ViewResult List()
+        // Default page 1
+        public ViewResult List(int page = 1)
         {
-            return View(repository.Products);
+            IEnumerable<Product> productPerPage = this.repository.Products.OrderBy(i => i.ProductID)
+                                                                        .Skip((page - 1) * PageSize)
+                                                                        .Take(PageSize);
+
+            PagingInfo pageInfo = new PagingInfo();
+            pageInfo.CurrentPage = page;
+            pageInfo.ItemsPerPage = this.PageSize;
+            pageInfo.TotalItems = this.repository.Products.Count();
+
+            ProductListViewModel model = new ProductListViewModel();
+            model.Products = productPerPage;
+            model.PagingInfo = pageInfo;
+
+            return View(model);
         }
     }
 }
