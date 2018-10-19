@@ -22,9 +22,10 @@ namespace SportsStore.WebUI.Controllers
 
         // GET: Product
         // Default page 1
-        public ViewResult List(int page = 1)
+        public ViewResult List(string category , int page = 1)
         {
-            IEnumerable<Product> productPerPage = this.repository.Products.OrderBy(i => i.ProductID)
+            IEnumerable<Product> productPerPage = this.repository.Products.Where(i => category == null || i.Category == category)
+                                                                        .OrderBy(i => i.ProductID)
                                                                         .Skip((page - 1) * PageSize)
                                                                         .Take(PageSize);
 
@@ -36,6 +37,7 @@ namespace SportsStore.WebUI.Controllers
             ProductListViewModel model = new ProductListViewModel();
             model.Products = productPerPage;
             model.PagingInfo = pageInfo;
+            model.CurrentCategory = category;
 
             return View(model);
         }
