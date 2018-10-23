@@ -19,64 +19,96 @@ namespace SportsStore.WebUI.Controllers
         {
             this.Irepository = _Irepository;
         }
-        // GET: Cart
-        public RedirectToRouteResult AddToCart(int productID, string returnURL)
-        {
-            Product product = this.Irepository.Products.FirstOrDefault(i => i.ProductID == productID);
 
-            if (product != null)
-            {
-                Debug.WriteLine("Hello world");
-                // getCart().AddItem(product, 1);
-                setCart(product, 1);
-                
-            }
-            
-
-            return RedirectToAction("Index", new { returnURL});
-        }
-
-        public RedirectToRouteResult RemoveFromCart(int _productID, string _returnURL)
-        {
-            Product product = this.Irepository.Products.FirstOrDefault(i => i.ProductID == _productID);
-
-            if (product != null)
-            {
-                getCart().RemoveAllItemsOfAProduct(product);
-            }
-            return RedirectToAction("Index", new { _returnURL});
-        }
-
-        public ViewResult Index(string returnURL)
+        public ViewResult Index(Cart cart, string returnURL)
         {
             CartIndexViewModel modelForView = new CartIndexViewModel();
-            modelForView.Cart = getCart();
+            modelForView.Cart = cart;
             modelForView.returnURL = returnURL;
 
             return View(modelForView);
         }
 
-        private void setCart(Product product, int quantity)
+        public RedirectToRouteResult AddToCart(Cart cart, int productID, string returnURL)
         {
-            Cart cart = (Cart)Session["Cart"];
-
-            if (cart == null)
+            Product product = this.Irepository.Products.FirstOrDefault(i => i.ProductID == productID);
+            if (product != null)
             {
-                cart = new Cart();
+                cart.AddItem(product,1);
             }
-            cart.AddItem(product, quantity);
-            Session["Cart"] = cart;
+            return RedirectToAction("Index", new { returnURL});
         }
 
-        private Cart getCart()
+        public RedirectToRouteResult RemoveFromCart(Cart cart, int productID, string returnURL)
         {
-            Cart cart = (Cart)Session["Cart"];
-            if (cart == null)
+            Product product = this.Irepository.Products.FirstOrDefault(i => i.ProductID == productID);
+
+            if (product != null)
             {
-                cart = new Cart();
-                Session["Cart"] = cart;
+                cart.RemoveAllItemsOfAProduct(product);
             }
-            return cart;
+
+            return RedirectToAction("Index", new { returnURL });
         }
+
+        // GET: Cart
+        //public RedirectToRouteResult AddToCart(int productID, string returnURL)
+        //{
+        //    Product product = this.Irepository.Products.FirstOrDefault(i => i.ProductID == productID);
+
+        //    if (product != null)
+        //    {
+        //        Debug.WriteLine("Hello world");
+        //        // getCart().AddItem(product, 1);
+        //        setCart(product, 1);
+                
+        //    }
+            
+
+        //    return RedirectToAction("Index", new { returnURL});
+        //}
+
+        //public RedirectToRouteResult RemoveFromCart(int _productID, string _returnURL)
+        //{
+        //    Product product = this.Irepository.Products.FirstOrDefault(i => i.ProductID == _productID);
+
+        //    if (product != null)
+        //    {
+        //        getCart().RemoveAllItemsOfAProduct(product);
+        //    }
+        //    return RedirectToAction("Index", new { _returnURL});
+        //}
+
+        //public ViewResult Index(string returnURL)
+        //{
+        //    CartIndexViewModel modelForView = new CartIndexViewModel();
+        //    modelForView.Cart = getCart();
+        //    modelForView.returnURL = returnURL;
+
+        //    return View(modelForView);
+        //}
+
+        //private void setCart(Product product, int quantity)
+        //{
+        //    Cart cart = (Cart)Session["Cart"];
+
+        //    if (cart == null)
+        //    {
+        //        cart = new Cart();
+        //    }
+        //    cart.AddItem(product, quantity);
+        //    Session["Cart"] = cart;
+        //}
+
+        //private Cart getCart()
+        //{
+        //    Cart cart = (Cart)Session["Cart"];
+        //    if (cart == null)
+        //    {
+        //        cart = new Cart();
+        //        Session["Cart"] = cart;
+        //    }
+        //    return cart;
+        //}
     }
 }
