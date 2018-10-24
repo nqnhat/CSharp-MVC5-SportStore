@@ -1,0 +1,68 @@
+﻿@model SportsStore.Domain.Entities.ShippingDetails
+
+@{ 
+    ViewBag.Title = "SportStore: Checkout";
+}
+
+<h2>Check out now</h2>
+<p>Please enter your details, and we'll ship your goods right away</p>
+
+@using (Html.BeginForm())
+{
+    <h3>Ship to</h3>
+    <div class="form-group">
+        <label>Name: </label>
+        @Html.TextBoxFor(i => i.Name, new {@class = "form-control"})
+    </div>
+
+    <h3>Address</h3>
+    
+    <div class="form-group">
+        <label>Line 1:</label>
+        @Html.TextBoxFor(i => i.Line1, new { @class = "form-control"})
+    </div>
+
+    <div class="form-group">
+        <label>Line 2:</label>
+        @Html.TextBoxFor(i => i.Line2, new { @class = "form-control"})
+    </div>
+
+    <div class="form-group">
+        <label>Line 3:</label>
+        @Html.TextBoxFor(i => i.Line3, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>City:</label>
+        @Html.TextBoxFor(i => i.City, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>State:</label>
+        @Html.TextBoxFor(i => i.State, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Zip:</label>
+        @Html.TextBoxFor(i => i.Zip, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Country:</label>
+        @Html.TextBoxFor(i => i.Country, new {@class = "form-control" })
+    </div>
+
+    <h3>Options</h3>
+    <div class="checkbox">
+        <label>
+            @Html.EditorFor(i => i.GiftWrap)
+            Gift wrap these items
+        </label>
+    </div>
+
+    <div class="text-center">
+        <input class="btn btn-primary" type="submit" value="Complete order"/>
+    </div>
+
+}
+

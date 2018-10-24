@@ -51,6 +51,16 @@ namespace SportsStore.WebUI.Controllers
             return RedirectToAction("Index", new { returnURL });
         }
 
+        public PartialViewResult Summary(Cart cart)
+        {
+            return PartialView(cart);
+        }
+
+        public ViewResult Checkout()
+        {
+            return View(new ShippingDetails());
+        }
+
         // GET: Cart
         //public RedirectToRouteResult AddToCart(int productID, string returnURL)
         //{
